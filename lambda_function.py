@@ -182,6 +182,7 @@ def get_fitbit_sleep_range(date_from, date_to):
 def lambda_handler(event, context):
 	#client = boto3.client('sqs', aws_access_key_id = access_key, aws_secret_access_key = access_secret, region_name = region)
 	intent_name = event['request']['intent']['name']
+	print(event)
 	if (intent_name == "sleepHours"):
 		date = datetime.datetime.now(timezone('US/Central'))
 		hours_slept = get_fitbit_sleep_hours(date)[0]
