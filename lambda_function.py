@@ -10,6 +10,7 @@ from pytz import timezone
 import time
 import plotly.plotly as py
 import plotly
+import math
 import plotly.graph_objs as go
 
 client_id = "22DB4F"
@@ -187,11 +188,12 @@ def lambda_handler(event, context):
 		date = datetime.datetime.now(timezone('US/Central'))
 		d = datetime.timedelta(days=4)
 		date = date - d
+		print(date)
 		hours_slept = get_fitbit_sleep_hours(date)[0]
 		print(hours_slept)
 		sleep_goal = get_fitbit_sleep_goal()
 		minutes = int(round((hours_slept * 60) % 60))
-		hours = int(floor(hours_slept))
+		hours = int(math.floor(hours_slept))
 		#make python graphs and send to s3 and multimodal
 		values = []
 		labels = ['Sleep Slept', 'Hours to Goal']
