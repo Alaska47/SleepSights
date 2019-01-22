@@ -92,8 +92,8 @@ def build_speechlet_response(title, output, reprompt_text, should_end_session):
 										"type":"Image",
 										 "source": "https://plot.ly/~rampally/0.png",
   								 		 "scale": "fill",
-										 "width": 300,
-										 "height": 300
+										 "width": 600,
+										 "height": 400
 									}
 								]
 							}
@@ -102,7 +102,7 @@ def build_speechlet_response(title, output, reprompt_text, should_end_session):
 				},
 				"datasources":{
 					"myDocumentData":{
-						"title":"This is a very simple sample"
+						"title":"Your Sleep Last Night"
 					}
 				}
 			}
