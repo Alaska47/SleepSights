@@ -6,7 +6,7 @@ import datetime
 import boto3
 import json, os
 from random import randint
-from pytz import timezone 
+from pytz import timezone
 import time
 import plotly.plotly as py
 import plotly
@@ -87,6 +87,11 @@ def build_speechlet_response(title, output, reprompt_text, should_end_session):
 									{
 										"type":"Text",
 										"text":"${payload.myDocumentData.title}"
+									},
+									{
+										"type":"Image",
+										 "source": "https://plot.ly/~rampally/0.png",
+  								 		 "scale": "fill"
 									}
 								]
 							}
@@ -135,7 +140,7 @@ def get_fitbit_sleep_hours(date):
 				sleep_data[str(a)] = round(td.seconds / 3600.0,2)
 	return (hours, sleep_data)
 
-	
+
 def get_fitbit_sleep_goal():
 	r = fitbit.get('https://api.fitbit.com/1/user/-/sleep/goal.json')
 	data = json.loads(r.text)
@@ -182,7 +187,7 @@ def lambda_handler(event, context):
 		minutes = int(round((hours_slept * 60) % 60))
 		hours = int(round(hours_slept))
 		#make python graphs and send to s3 and multimodal
-		
+
 		values = []
 		labels = ['Sleep Slept', 'Hours to Goal']
 		colors = ['#E1396C', '#96D38C']
@@ -191,9 +196,9 @@ def lambda_handler(event, context):
 		else:
 			values=[hours_slept, 0]
 		trace = go.Pie(labels=labels, values=values,
-				   hoverinfo='label+percent', textinfo='value', 
+				   hoverinfo='label+percent', textinfo='value',
 				   textfont=dict(size=20),
-				   marker=dict(colors=colors, 
+				   marker=dict(colors=colors,
 							   line=dict(color='#000000', width=2)))
 		try:
 			py.iplot([trace], filename='styled_pie_chart')
