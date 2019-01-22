@@ -20,11 +20,11 @@ fitbit = OAuth2Session(client_id, client=client, scope=scope)
 authorization_url = "https://www.fitbit.com/oauth2/authorize"
 auth_url, state = fitbit.authorization_url(authorization_url)
 #print("Visit this page in your browser: {}".cformat(auth_url))
-callback_url = "https://127.0.0.1:8080/#access_token=eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMkRCNEYiLCJzdWIiOiI2UUtLSjQiLCJpc3MiOiJGaXRiaXQiLCJ0eXAiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZXMiOiJyc2xlIiwiZXhwIjoxNTc5NjQ5NzgzLCJpYXQiOjE1NDgxMTM3ODN9.BX4sTf0-8TXK8r1hU70F9F2ghXtE-53onQgMCqKxFYY&user_id=6QKKJ4&scope=sleep&state=WDyClkPkZxi2nXAworKvzSYE5mOBMS&token_type=Bearer&expires_in=31536000"
+callback_url = "READACTED"
 fitbit.token_from_fragment(callback_url)
-py.sign_in(username='rampally', api_key='dJT8FJlWVhfYXX9q5v1c')
+py.sign_in(username='rampally', api_key='REDACTED')
 
-def build_speechlet_response(title, output, reprompt_text, should_end_session):
+def build_speechlet_response(title, output, reprompt_text, should_end_session, image):
 	return {
 		'outputSpeech':{
 			'type':'PlainText',
@@ -91,8 +91,8 @@ def build_speechlet_response(title, output, reprompt_text, should_end_session):
 									},
 									{
 										"type":"Image",
-										 "source": "https://plot.ly/~rampally/0.png",
-  								 		 "scale": "fill",
+										 "source": image,
+										 "scale": "fill",
 										 "width": 600,
 										 "height": 400
 									}
@@ -132,6 +132,7 @@ def build_response(session_attributes, speechlet_response):
 def get_fitbit_sleep_hours(date):
 	r = fitbit.get('https://api.fitbit.com/1.2/user/-/sleep/date/' + date.strftime('%Y-%m-%d') + '.json')
 	data = json.loads(r.text)
+	print(data)
 	hours = 0.0
 	sleep_data = {}
 	for each in data['sleep']:
@@ -207,32 +208,29 @@ def lambda_handler(event, context):
 				   textfont=dict(size=20),
 				   marker=dict(colors=colors,
 							   line=dict(color='#000000', width=2)))
-		try:
-			py.iplot([trace], filename='styled_pie_chart')
-		except:
-			pass
-
+		img = "test"
+		img = py.plot([trace], filename='styled_pie_chart')
+		img = img + ".png"
 		speech_text = 'You slept for '+ str(hours) +' hours and ' + str(minutes) + ' minutes last night'
-		speechlet = build_speechlet_response("sample", speech_text, "", "True")
+		speechlet = build_speechlet_response("sample", speech_text, "", "True", img)
 		return build_response({}, speechlet)
 	if (intent_name == "sleepTimings"):
 		date = datetime.datetime.now(timezone('US/Central'))
 		d = datetime.timedelta(days=4)
 		a = date - d
-		time_slept,time_woke = get_fitbit_sleep_times(a)[0], get_fitbit_sleep_times(a)[1]
+		aa = get_fitbit_sleep_times(a)
+		time_slept,time_woke = aa[0], aa[1]
 		hours_slept = get_fitbit_sleep_hours(a)[0]
 		sleepData = get_fitbit_sleep_hours(a)[1]
 		print(time_slept, time_woke, hours_slept, sleepData)
 		#line graph of depth of sleep
 		data = [go.Bar(
-            x=sleepData.keys(),
-            y=sleepData.values()
-    	)]
-		try:
-			py.iplot(data, filename='basic-bar')
-		except:
-			pass
-
+			x=sleepData.keys(),
+			y=sleepData.values()
+		)]
+		img = "test"
+		img = py.plot(data, filename='basic-bar')
+		img = img + ".png"
 		speech_text = 'You slept at '+ str(time_slept) +' and woke up at ' + str(time_woke) + ' last night'
-		speechlet = build_speechlet_response("sample", speech_text, "", "True")
+		speechlet = build_speechlet_response("sample", speech_text, "", "True", img)
 		return build_response({}, speechlet)
