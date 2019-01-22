@@ -188,11 +188,11 @@ def lambda_handler(event, context):
 		d = datetime.timedelta(days=4)
 		date = date - d
 		hours_slept = get_fitbit_sleep_hours(date)[0]
+		print(hours_slept)
 		sleep_goal = get_fitbit_sleep_goal()
 		minutes = int(round((hours_slept * 60) % 60))
-		hours = int(round(hours_slept))
+		hours = int(floor(hours_slept))
 		#make python graphs and send to s3 and multimodal
-
 		values = []
 		labels = ['Sleep Slept', 'Hours to Goal']
 		colors = ['#E1396C', '#96D38C']
