@@ -220,7 +220,10 @@ def lambda_handler(event, context):
 		print(time_slept, time_woke, hours_slept, sleepData)
 		#line graph of depth of sleep
 		data = [go.Bar(
-            x=['giraffes', 'orangutans', 'monkeys'],
-            y=[20, 14, 23]
+            x=sleepData.keys(),
+            y=sleepData.values()
     	)]
-		py.iplot(data, filename='basic-bar')
+		try:
+			py.iplot(data, filename='basic-bar')
+		except:
+			pass
