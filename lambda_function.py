@@ -211,7 +211,7 @@ def lambda_handler(event, context):
 		speechlet = build_speechlet_response("sample", speech_text, "", "True")
 		return build_response({}, speechlet)
 	if (intent_name == "sleepTimings"):
-		time_slept,time_woke = get_fitbit_sleep_times(datetime.datetime.strptime(each['dateOfSleep'], "%Y-%m-%d"))
+		time_slept,time_woke = get_fitbit_sleep_times(datetime.datetime.now(timezone('US/Central')))
 		hours_slept, sleepData = get_fitbit_sleep_hours(date)[0]
 		print(time_slept, time_woke, sleepData)
 		#line graph of depth of sleep
