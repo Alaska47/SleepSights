@@ -212,9 +212,11 @@ def lambda_handler(event, context):
 		return build_response({}, speechlet)
 	if (intent_name == "sleepTimings"):
 		date = datetime.datetime.now(timezone('US/Central'))
-		time_slept,time_woke = get_fitbit_sleep_times(date)[0], get_fitbit_sleep_times(date)[1]
-		hours_slept = get_fitbit_sleep_hours(date)[0]
-		sleepData = get_fitbit_sleep_hours(date)[1]
+		d = datetime.timedelta(days=4)
+		a = date - d
+		time_slept,time_woke = get_fitbit_sleep_times(a)[0], get_fitbit_sleep_times(a)[1]
+		hours_slept = get_fitbit_sleep_hours(a)[0]
+		sleepData = get_fitbit_sleep_hours(a)[1]
 		print(time_slept, time_woke, hours_slept, sleepData)
 		#line graph of depth of sleep
 		data = [go.Bar(
