@@ -92,8 +92,8 @@ def build_speechlet_response(title, output, reprompt_text, should_end_session):
 										"type":"Image",
 										 "source": "https://plot.ly/~rampally/0.png",
   								 		 "scale": "fill",
-										 "width": 300,
-										 "height": 300
+										 "width": 600,
+										 "height": 400
 									}
 								]
 							}
@@ -102,7 +102,7 @@ def build_speechlet_response(title, output, reprompt_text, should_end_session):
 				},
 				"datasources":{
 					"myDocumentData":{
-						"title":"This is a very simple sample"
+						"title":"Your Sleep Last Night"
 					}
 				}
 			}
@@ -228,3 +228,7 @@ def lambda_handler(event, context):
 			py.iplot(data, filename='basic-bar')
 		except:
 			pass
+
+		speech_text = 'You slept at '+ str(time_slept) +' and woke up at ' + str(time_woke) + ' last night'
+		speechlet = build_speechlet_response("sample", speech_text, "", "True")
+		return build_response({}, speechlet)
