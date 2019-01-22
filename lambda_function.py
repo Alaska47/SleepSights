@@ -91,7 +91,9 @@ def build_speechlet_response(title, output, reprompt_text, should_end_session):
 									{
 										"type":"Image",
 										 "source": "https://plot.ly/~rampally/0.png",
-  								 		 "scale": "fill"
+  								 		 "scale": "fill",
+										 "width": 300,
+										 "height": 300
 									}
 								]
 							}
