@@ -227,3 +227,7 @@ def lambda_handler(event, context):
 			py.iplot(data, filename='basic-bar')
 		except:
 			pass
+
+		speech_text = 'You slept at '+ str(time_slept) +' and woke up at ' + str(time_woke) + ' last night'
+		speechlet = build_speechlet_response("sample", speech_text, "", "True")
+		return build_response({}, speechlet)
